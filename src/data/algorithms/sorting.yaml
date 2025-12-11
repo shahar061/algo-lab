@@ -1,0 +1,2078 @@
+# Sorting Algorithms Data
+# This file contains all sorting algorithm metadata and configurations
+
+algorithms:
+  - id: bubble-sort
+    name: Bubble Sort
+    description: A simple comparison-based sorting algorithm that repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order.
+    complexity:
+      time:
+        best: O(n)
+        average: O(n²)
+        worst: O(n²)
+      space: O(1)
+    characteristics:
+      stable: true
+      inPlace: true
+      adaptive: true
+      comparison: true
+    tags:
+      - comparison
+      - stable
+      - in-place
+      - simple
+      - educational
+    difficulty: beginner
+    explanation:
+      - Compares adjacent elements in the array
+      - Swaps them if they are in the wrong order
+      - Repeats this process until no more swaps are needed
+      - Each pass "bubbles" the largest element to its correct position
+    pseudocode: |
+      procedure bubbleSort(A: list of sortable items)
+          n = length(A)
+          repeat
+              swapped = false
+              for i = 1 to n-1 do
+                  if A[i-1] > A[i] then
+                      swap(A[i-1], A[i])
+                      swapped = true
+                  end if
+              end for
+              n = n - 1
+          until not swapped
+      end procedure
+    useCases:
+      - Small datasets
+      - Nearly sorted data
+      - Educational purposes
+      - When simplicity is more important than efficiency
+    implementations:
+      python: |
+        def bubble_sort(arr):
+            """
+            Sorts an array using the bubble sort algorithm.
+            
+            Args:
+                arr: List of comparable elements
+                
+            Returns:
+                The sorted list (in-place)
+            """
+            n = len(arr)
+            
+            # Traverse through all array elements
+            for i in range(n):
+                # Flag to optimize by stopping if no swaps occur
+                swapped = False
+                
+                # Last i elements are already in place
+                for j in range(0, n - i - 1):
+                    # Swap if the element found is greater than the next element
+                    if arr[j] > arr[j + 1]:
+                        arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                        swapped = True
+                
+                # If no swaps occurred, array is sorted
+                if not swapped:
+                    break
+                    
+            return arr
+
+
+        # Example usage
+        if __name__ == "__main__":
+            numbers = [64, 34, 25, 12, 22, 11, 90]
+            print(f"Original array: {numbers}")
+            
+            sorted_numbers = bubble_sort(numbers)
+            print(f"Sorted array: {sorted_numbers}")
+      java: |
+        public class BubbleSort {
+            /**
+             * Sorts an array using the bubble sort algorithm.
+             * 
+             * @param arr The array to be sorted
+             */
+            public static void bubbleSort(int[] arr) {
+                int n = arr.length;
+                
+                // Traverse through all array elements
+                for (int i = 0; i < n; i++) {
+                    // Flag to optimize by stopping if no swaps occur
+                    boolean swapped = false;
+                    
+                    // Last i elements are already in place
+                    for (int j = 0; j < n - i - 1; j++) {
+                        // Swap if the element found is greater than the next element
+                        if (arr[j] > arr[j + 1]) {
+                            // Swap arr[j] and arr[j+1]
+                            int temp = arr[j];
+                            arr[j] = arr[j + 1];
+                            arr[j + 1] = temp;
+                            swapped = true;
+                        }
+                    }
+                    
+                    // If no swaps occurred, array is sorted
+                    if (!swapped) {
+                        break;
+                    }
+                }
+            }
+            
+            /**
+             * Utility method to print an array.
+             * 
+             * @param arr The array to print
+             */
+            public static void printArray(int[] arr) {
+                for (int value : arr) {
+                    System.out.print(value + " ");
+                }
+                System.out.println();
+            }
+            
+            // Example usage
+            public static void main(String[] args) {
+                int[] numbers = {64, 34, 25, 12, 22, 11, 90};
+                
+                System.out.println("Original array:");
+                printArray(numbers);
+                
+                bubbleSort(numbers);
+                
+                System.out.println("Sorted array:");
+                printArray(numbers);
+            }
+        }
+      go: |
+        package main
+
+        import "fmt"
+
+        // BubbleSort sorts a slice using the bubble sort algorithm.
+        // It modifies the slice in place.
+        func BubbleSort(arr []int) {
+            n := len(arr)
+            
+            // Traverse through all array elements
+            for i := 0; i < n; i++ {
+                // Flag to optimize by stopping if no swaps occur
+                swapped := false
+                
+                // Last i elements are already in place
+                for j := 0; j < n-i-1; j++ {
+                    // Swap if the element found is greater than the next element
+                    if arr[j] > arr[j+1] {
+                        arr[j], arr[j+1] = arr[j+1], arr[j]
+                        swapped = true
+                    }
+                }
+                
+                // If no swaps occurred, array is sorted
+                if !swapped {
+                    break
+                }
+            }
+        }
+
+        // Example usage
+        func main() {
+            numbers := []int{64, 34, 25, 12, 22, 11, 90}
+            
+            fmt.Println("Original array:", numbers)
+            
+            BubbleSort(numbers)
+            
+            fmt.Println("Sorted array:", numbers)
+        }
+
+  - id: insertion-sort
+    name: Insertion Sort
+    description: Builds the final sorted array one item at a time by repeatedly inserting a new element into the sorted portion of the array.
+    complexity:
+      time:
+        best: O(n)
+        average: O(n²)
+        worst: O(n²)
+      space: O(1)
+    characteristics:
+      stable: true
+      inPlace: true
+      adaptive: true
+      comparison: true
+    tags:
+      - comparison
+      - stable
+      - in-place
+      - adaptive
+      - online
+    difficulty: beginner
+    explanation:
+      - Divides array into sorted and unsorted sections
+      - Takes one element from unsorted section
+      - Finds its correct position in sorted section
+      - Inserts it there by shifting other elements
+    pseudocode: |
+      procedure insertionSort(A: list of sortable items)
+          for i = 1 to length(A) - 1 do
+              key = A[i]
+              j = i - 1
+              while j >= 0 and A[j] > key do
+                  A[j + 1] = A[j]
+                  j = j - 1
+              end while
+              A[j + 1] = key
+          end for
+      end procedure
+    useCases:
+      - Small datasets
+      - Nearly sorted data
+      - Online sorting (data arrives over time)
+      - When simplicity and low overhead are important
+    implementations:
+      python: |
+        def insertion_sort(arr):
+            """
+            Sorts an array using the insertion sort algorithm.
+            
+            Args:
+                arr: List of comparable elements
+                
+            Returns:
+                The sorted list (in-place)
+            """
+            # Traverse through 1 to len(arr)
+            for i in range(1, len(arr)):
+                key = arr[i]
+                j = i - 1
+                
+                # Move elements greater than key one position ahead
+                while j >= 0 and arr[j] > key:
+                    arr[j + 1] = arr[j]
+                    j -= 1
+                
+                # Insert the key at its correct position
+                arr[j + 1] = key
+                    
+            return arr
+
+
+        # Example usage
+        if __name__ == "__main__":
+            numbers = [64, 34, 25, 12, 22, 11, 90]
+            print(f"Original array: {numbers}")
+            
+            sorted_numbers = insertion_sort(numbers)
+            print(f"Sorted array: {sorted_numbers}")
+      java: |
+        public class InsertionSort {
+            /**
+             * Sorts an array using the insertion sort algorithm.
+             * 
+             * @param arr The array to be sorted
+             */
+            public static void insertionSort(int[] arr) {
+                int n = arr.length;
+                
+                // Traverse through 1 to n
+                for (int i = 1; i < n; i++) {
+                    int key = arr[i];
+                    int j = i - 1;
+                    
+                    // Move elements greater than key one position ahead
+                    while (j >= 0 && arr[j] > key) {
+                        arr[j + 1] = arr[j];
+                        j--;
+                    }
+                    
+                    // Insert the key at its correct position
+                    arr[j + 1] = key;
+                }
+            }
+            
+            /**
+             * Utility method to print an array.
+             * 
+             * @param arr The array to print
+             */
+            public static void printArray(int[] arr) {
+                for (int value : arr) {
+                    System.out.print(value + " ");
+                }
+                System.out.println();
+            }
+            
+            // Example usage
+            public static void main(String[] args) {
+                int[] numbers = {64, 34, 25, 12, 22, 11, 90};
+                
+                System.out.println("Original array:");
+                printArray(numbers);
+                
+                insertionSort(numbers);
+                
+                System.out.println("Sorted array:");
+                printArray(numbers);
+            }
+        }
+      go: |
+        package main
+
+        import "fmt"
+
+        // InsertionSort sorts a slice using the insertion sort algorithm.
+        // It modifies the slice in place.
+        func InsertionSort(arr []int) {
+            n := len(arr)
+            
+            // Traverse through 1 to n
+            for i := 1; i < n; i++ {
+                key := arr[i]
+                j := i - 1
+                
+                // Move elements greater than key one position ahead
+                for j >= 0 && arr[j] > key {
+                    arr[j+1] = arr[j]
+                    j--
+                }
+                
+                // Insert the key at its correct position
+                arr[j+1] = key
+            }
+        }
+
+        // Example usage
+        func main() {
+            numbers := []int{64, 34, 25, 12, 22, 11, 90}
+            
+            fmt.Println("Original array:", numbers)
+            
+            InsertionSort(numbers)
+            
+            fmt.Println("Sorted array:", numbers)
+        }
+
+  - id: selection-sort
+    name: Selection Sort
+    description: Divides the input into a sorted and an unsorted region, and repeatedly selects the smallest element from the unsorted region and moves it to the sorted region.
+    complexity:
+      time:
+        best: O(n²)
+        average: O(n²)
+        worst: O(n²)
+      space: O(1)
+    characteristics:
+      stable: false
+      inPlace: true
+      adaptive: false
+      comparison: true
+    tags:
+      - comparison
+      - in-place
+      - simple
+      - minimal-swaps
+    difficulty: beginner
+    explanation:
+      - Find the minimum element in unsorted array
+      - Swap it with the first unsorted element
+      - Move the boundary between sorted and unsorted
+      - Repeat until entire array is sorted
+    pseudocode: |
+      procedure selectionSort(A: list of sortable items)
+          n = length(A)
+          for i = 0 to n - 2 do
+              minIndex = i
+              for j = i + 1 to n - 1 do
+                  if A[j] < A[minIndex] then
+                      minIndex = j
+                  end if
+              end for
+              if minIndex != i then
+                  swap(A[i], A[minIndex])
+              end if
+          end for
+      end procedure
+    useCases:
+      - When memory writes are expensive
+      - Small datasets
+      - When simplicity is required
+    implementations:
+      python: |
+        def selection_sort(arr):
+            """
+            Sorts an array using the selection sort algorithm.
+            
+            Args:
+                arr: List of comparable elements
+                
+            Returns:
+                The sorted list (in-place)
+            """
+            n = len(arr)
+            
+            # Traverse through all array elements
+            for i in range(n):
+                # Find the minimum element in remaining unsorted array
+                min_idx = i
+                for j in range(i + 1, n):
+                    if arr[j] < arr[min_idx]:
+                        min_idx = j
+                
+                # Swap the found minimum element with the first element
+                arr[i], arr[min_idx] = arr[min_idx], arr[i]
+                    
+            return arr
+
+
+        # Example usage
+        if __name__ == "__main__":
+            numbers = [64, 34, 25, 12, 22, 11, 90]
+            print(f"Original array: {numbers}")
+            
+            sorted_numbers = selection_sort(numbers)
+            print(f"Sorted array: {sorted_numbers}")
+      java: |
+        public class SelectionSort {
+            /**
+             * Sorts an array using the selection sort algorithm.
+             * 
+             * @param arr The array to be sorted
+             */
+            public static void selectionSort(int[] arr) {
+                int n = arr.length;
+                
+                // Traverse through all array elements
+                for (int i = 0; i < n - 1; i++) {
+                    // Find the minimum element in remaining unsorted array
+                    int minIdx = i;
+                    for (int j = i + 1; j < n; j++) {
+                        if (arr[j] < arr[minIdx]) {
+                            minIdx = j;
+                        }
+                    }
+                    
+                    // Swap the found minimum element with the first element
+                    if (minIdx != i) {
+                        int temp = arr[i];
+                        arr[i] = arr[minIdx];
+                        arr[minIdx] = temp;
+                    }
+                }
+            }
+            
+            /**
+             * Utility method to print an array.
+             * 
+             * @param arr The array to print
+             */
+            public static void printArray(int[] arr) {
+                for (int value : arr) {
+                    System.out.print(value + " ");
+                }
+                System.out.println();
+            }
+            
+            // Example usage
+            public static void main(String[] args) {
+                int[] numbers = {64, 34, 25, 12, 22, 11, 90};
+                
+                System.out.println("Original array:");
+                printArray(numbers);
+                
+                selectionSort(numbers);
+                
+                System.out.println("Sorted array:");
+                printArray(numbers);
+            }
+        }
+      go: |
+        package main
+
+        import "fmt"
+
+        // SelectionSort sorts a slice using the selection sort algorithm.
+        // It modifies the slice in place.
+        func SelectionSort(arr []int) {
+            n := len(arr)
+            
+            // Traverse through all array elements
+            for i := 0; i < n-1; i++ {
+                // Find the minimum element in remaining unsorted array
+                minIdx := i
+                for j := i + 1; j < n; j++ {
+                    if arr[j] < arr[minIdx] {
+                        minIdx = j
+                    }
+                }
+                
+                // Swap the found minimum element with the first element
+                if minIdx != i {
+                    arr[i], arr[minIdx] = arr[minIdx], arr[i]
+                }
+            }
+        }
+
+        // Example usage
+        func main() {
+            numbers := []int{64, 34, 25, 12, 22, 11, 90}
+            
+            fmt.Println("Original array:", numbers)
+            
+            SelectionSort(numbers)
+            
+            fmt.Println("Sorted array:", numbers)
+        }
+
+  - id: merge-sort
+    name: Merge Sort
+    description: An efficient, stable, divide-and-conquer sorting algorithm that divides the array into halves, sorts them, and then merges them back together.
+    complexity:
+      time:
+        best: O(n log n)
+        average: O(n log n)
+        worst: O(n log n)
+      space: O(n)
+    characteristics:
+      stable: true
+      inPlace: false
+      adaptive: false
+      comparison: true
+    tags:
+      - comparison
+      - stable
+      - divide-and-conquer
+      - recursive
+      - efficient
+    difficulty: intermediate
+    explanation:
+      - Divide the array into two halves
+      - Recursively sort both halves
+      - Merge the two sorted halves
+      - Guaranteed O(n log n) time complexity
+    pseudocode: |
+      procedure mergeSort(A: list of sortable items)
+          if length(A) <= 1 then
+              return A
+          end if
+          
+          mid = length(A) / 2
+          left = mergeSort(A[0...mid-1])
+          right = mergeSort(A[mid...end])
+          
+          return merge(left, right)
+      end procedure
+
+      procedure merge(left, right)
+          result = []
+          while left is not empty and right is not empty do
+              if left[0] <= right[0] then
+                  append left[0] to result
+                  remove left[0]
+              else
+                  append right[0] to result
+                  remove right[0]
+              end if
+          end while
+          append remaining elements to result
+          return result
+      end procedure
+    useCases:
+      - Large datasets
+      - When stability is required
+      - External sorting (sorting data that doesn't fit in memory)
+      - Guaranteed performance needed
+    implementations:
+      python: |
+        def merge_sort(arr):
+            """
+            Sorts an array using the merge sort algorithm.
+            
+            Args:
+                arr: List of comparable elements
+                
+            Returns:
+                The sorted list
+            """
+            # Base case: arrays with 0 or 1 element are already sorted
+            if len(arr) <= 1:
+                return arr
+            
+            # Divide the array into two halves
+            mid = len(arr) // 2
+            left = merge_sort(arr[:mid])
+            right = merge_sort(arr[mid:])
+            
+            # Merge the sorted halves
+            return merge(left, right)
+
+
+        def merge(left, right):
+            """
+            Merges two sorted lists into one sorted list.
+            
+            Args:
+                left: First sorted list
+                right: Second sorted list
+                
+            Returns:
+                Merged sorted list
+            """
+            result = []
+            i = j = 0
+            
+            # Merge elements in sorted order
+            while i < len(left) and j < len(right):
+                if left[i] <= right[j]:
+                    result.append(left[i])
+                    i += 1
+                else:
+                    result.append(right[j])
+                    j += 1
+            
+            # Add remaining elements
+            result.extend(left[i:])
+            result.extend(right[j:])
+            
+            return result
+
+
+        # Example usage
+        if __name__ == "__main__":
+            numbers = [64, 34, 25, 12, 22, 11, 90]
+            print(f"Original array: {numbers}")
+            
+            sorted_numbers = merge_sort(numbers)
+            print(f"Sorted array: {sorted_numbers}")
+      java: |
+        public class MergeSort {
+            /**
+             * Sorts an array using the merge sort algorithm.
+             * 
+             * @param arr The array to be sorted
+             */
+            public static void mergeSort(int[] arr) {
+                if (arr.length <= 1) {
+                    return;
+                }
+                
+                int[] temp = new int[arr.length];
+                mergeSortHelper(arr, temp, 0, arr.length - 1);
+            }
+            
+            /**
+             * Helper method for merge sort.
+             * 
+             * @param arr The array to sort
+             * @param temp Temporary array for merging
+             * @param left Left boundary
+             * @param right Right boundary
+             */
+            private static void mergeSortHelper(int[] arr, int[] temp, int left, int right) {
+                if (left < right) {
+                    int mid = left + (right - left) / 2;
+                    
+                    // Sort first and second halves
+                    mergeSortHelper(arr, temp, left, mid);
+                    mergeSortHelper(arr, temp, mid + 1, right);
+                    
+                    // Merge the sorted halves
+                    merge(arr, temp, left, mid, right);
+                }
+            }
+            
+            /**
+             * Merges two sorted subarrays.
+             * 
+             * @param arr The array containing the subarrays
+             * @param temp Temporary array for merging
+             * @param left Left boundary
+             * @param mid Middle point
+             * @param right Right boundary
+             */
+            private static void merge(int[] arr, int[] temp, int left, int mid, int right) {
+                // Copy elements to temp array
+                for (int i = left; i <= right; i++) {
+                    temp[i] = arr[i];
+                }
+                
+                int i = left;
+                int j = mid + 1;
+                int k = left;
+                
+                // Merge back to arr in sorted order
+                while (i <= mid && j <= right) {
+                    if (temp[i] <= temp[j]) {
+                        arr[k++] = temp[i++];
+                    } else {
+                        arr[k++] = temp[j++];
+                    }
+                }
+                
+                // Copy remaining elements from left half
+                while (i <= mid) {
+                    arr[k++] = temp[i++];
+                }
+            }
+            
+            /**
+             * Utility method to print an array.
+             * 
+             * @param arr The array to print
+             */
+            public static void printArray(int[] arr) {
+                for (int value : arr) {
+                    System.out.print(value + " ");
+                }
+                System.out.println();
+            }
+            
+            // Example usage
+            public static void main(String[] args) {
+                int[] numbers = {64, 34, 25, 12, 22, 11, 90};
+                
+                System.out.println("Original array:");
+                printArray(numbers);
+                
+                mergeSort(numbers);
+                
+                System.out.println("Sorted array:");
+                printArray(numbers);
+            }
+        }
+      go: |
+        package main
+
+        import "fmt"
+
+        // MergeSort sorts a slice using the merge sort algorithm.
+        // It returns a new sorted slice without modifying the original.
+        func MergeSort(arr []int) []int {
+            // Base case: slices with 0 or 1 element are already sorted
+            if len(arr) <= 1 {
+                return arr
+            }
+            
+            // Divide the slice into two halves
+            mid := len(arr) / 2
+            left := MergeSort(arr[:mid])
+            right := MergeSort(arr[mid:])
+            
+            // Merge the sorted halves
+            return merge(left, right)
+        }
+
+        // merge combines two sorted slices into one sorted slice
+        func merge(left, right []int) []int {
+            result := make([]int, 0, len(left)+len(right))
+            i, j := 0, 0
+            
+            // Merge elements in sorted order
+            for i < len(left) && j < len(right) {
+                if left[i] <= right[j] {
+                    result = append(result, left[i])
+                    i++
+                } else {
+                    result = append(result, right[j])
+                    j++
+                }
+            }
+            
+            // Add remaining elements
+            result = append(result, left[i:]...)
+            result = append(result, right[j:]...)
+            
+            return result
+        }
+
+        // Example usage
+        func main() {
+            numbers := []int{64, 34, 25, 12, 22, 11, 90}
+            
+            fmt.Println("Original array:", numbers)
+            
+            sorted := MergeSort(numbers)
+            
+            fmt.Println("Sorted array:", sorted)
+        }
+
+  - id: quick-sort
+    name: Quick Sort
+    description: A highly efficient divide-and-conquer sorting algorithm that picks a pivot element and partitions the array around it.
+    complexity:
+      time:
+        best: O(n log n)
+        average: O(n log n)
+        worst: O(n²)
+      space: O(log n)
+    characteristics:
+      stable: false
+      inPlace: true
+      adaptive: false
+      comparison: true
+    tags:
+      - comparison
+      - divide-and-conquer
+      - recursive
+      - efficient
+      - in-place
+    difficulty: intermediate
+    explanation:
+      - Choose a pivot element from the array
+      - Partition array so elements smaller than pivot are on left, larger on right
+      - Recursively sort the left and right partitions
+      - Often fastest in practice despite O(n²) worst case
+    pseudocode: |
+      procedure quickSort(A: list of sortable items, low, high)
+          if low < high then
+              pivotIndex = partition(A, low, high)
+              quickSort(A, low, pivotIndex - 1)
+              quickSort(A, pivotIndex + 1, high)
+          end if
+      end procedure
+
+      procedure partition(A, low, high)
+          pivot = A[high]
+          i = low - 1
+          for j = low to high - 1 do
+              if A[j] < pivot then
+                  i = i + 1
+                  swap(A[i], A[j])
+              end if
+          end for
+          swap(A[i + 1], A[high])
+          return i + 1
+      end procedure
+    useCases:
+      - General purpose sorting
+      - Large datasets
+      - When average-case performance matters more than worst-case
+      - In-place sorting with good cache performance
+    implementations:
+      python: |
+        def quick_sort(arr):
+            """
+            Sorts an array using the quick sort algorithm.
+            
+            Args:
+                arr: List of comparable elements
+                
+            Returns:
+                The sorted list (in-place)
+            """
+            quick_sort_helper(arr, 0, len(arr) - 1)
+            return arr
+
+
+        def quick_sort_helper(arr, low, high):
+            """
+            Helper function for quick sort.
+            
+            Args:
+                arr: The array to sort
+                low: Starting index
+                high: Ending index
+            """
+            if low < high:
+                # Partition the array and get pivot index
+                pivot_idx = partition(arr, low, high)
+                
+                # Recursively sort elements before and after partition
+                quick_sort_helper(arr, low, pivot_idx - 1)
+                quick_sort_helper(arr, pivot_idx + 1, high)
+
+
+        def partition(arr, low, high):
+            """
+            Partitions the array around a pivot.
+            
+            Args:
+                arr: The array to partition
+                low: Starting index
+                high: Ending index
+                
+            Returns:
+                The final position of the pivot
+            """
+            # Choose the rightmost element as pivot
+            pivot = arr[high]
+            i = low - 1
+            
+            # Place elements smaller than pivot to the left
+            for j in range(low, high):
+                if arr[j] < pivot:
+                    i += 1
+                    arr[i], arr[j] = arr[j], arr[i]
+            
+            # Place pivot in its correct position
+            arr[i + 1], arr[high] = arr[high], arr[i + 1]
+            return i + 1
+
+
+        # Example usage
+        if __name__ == "__main__":
+            numbers = [64, 34, 25, 12, 22, 11, 90]
+            print(f"Original array: {numbers}")
+            
+            sorted_numbers = quick_sort(numbers)
+            print(f"Sorted array: {sorted_numbers}")
+      java: |
+        public class QuickSort {
+            /**
+             * Sorts an array using the quick sort algorithm.
+             * 
+             * @param arr The array to be sorted
+             */
+            public static void quickSort(int[] arr) {
+                quickSortHelper(arr, 0, arr.length - 1);
+            }
+            
+            /**
+             * Helper method for quick sort.
+             * 
+             * @param arr The array to sort
+             * @param low Starting index
+             * @param high Ending index
+             */
+            private static void quickSortHelper(int[] arr, int low, int high) {
+                if (low < high) {
+                    // Partition the array and get pivot index
+                    int pivotIdx = partition(arr, low, high);
+                    
+                    // Recursively sort elements before and after partition
+                    quickSortHelper(arr, low, pivotIdx - 1);
+                    quickSortHelper(arr, pivotIdx + 1, high);
+                }
+            }
+            
+            /**
+             * Partitions the array around a pivot.
+             * 
+             * @param arr The array to partition
+             * @param low Starting index
+             * @param high Ending index
+             * @return The final position of the pivot
+             */
+            private static int partition(int[] arr, int low, int high) {
+                // Choose the rightmost element as pivot
+                int pivot = arr[high];
+                int i = low - 1;
+                
+                // Place elements smaller than pivot to the left
+                for (int j = low; j < high; j++) {
+                    if (arr[j] < pivot) {
+                        i++;
+                        // Swap arr[i] and arr[j]
+                        int temp = arr[i];
+                        arr[i] = arr[j];
+                        arr[j] = temp;
+                    }
+                }
+                
+                // Place pivot in its correct position
+                int temp = arr[i + 1];
+                arr[i + 1] = arr[high];
+                arr[high] = temp;
+                
+                return i + 1;
+            }
+            
+            /**
+             * Utility method to print an array.
+             * 
+             * @param arr The array to print
+             */
+            public static void printArray(int[] arr) {
+                for (int value : arr) {
+                    System.out.print(value + " ");
+                }
+                System.out.println();
+            }
+            
+            // Example usage
+            public static void main(String[] args) {
+                int[] numbers = {64, 34, 25, 12, 22, 11, 90};
+                
+                System.out.println("Original array:");
+                printArray(numbers);
+                
+                quickSort(numbers);
+                
+                System.out.println("Sorted array:");
+                printArray(numbers);
+            }
+        }
+      go: |
+        package main
+
+        import "fmt"
+
+        // QuickSort sorts a slice using the quick sort algorithm.
+        // It modifies the slice in place.
+        func QuickSort(arr []int) {
+            quickSortHelper(arr, 0, len(arr)-1)
+        }
+
+        // quickSortHelper is a helper function for quick sort
+        func quickSortHelper(arr []int, low, high int) {
+            if low < high {
+                // Partition the array and get pivot index
+                pivotIdx := partition(arr, low, high)
+                
+                // Recursively sort elements before and after partition
+                quickSortHelper(arr, low, pivotIdx-1)
+                quickSortHelper(arr, pivotIdx+1, high)
+            }
+        }
+
+        // partition partitions the array around a pivot
+        func partition(arr []int, low, high int) int {
+            // Choose the rightmost element as pivot
+            pivot := arr[high]
+            i := low - 1
+            
+            // Place elements smaller than pivot to the left
+            for j := low; j < high; j++ {
+                if arr[j] < pivot {
+                    i++
+                    arr[i], arr[j] = arr[j], arr[i]
+                }
+            }
+            
+            // Place pivot in its correct position
+            arr[i+1], arr[high] = arr[high], arr[i+1]
+            return i + 1
+        }
+
+        // Example usage
+        func main() {
+            numbers := []int{64, 34, 25, 12, 22, 11, 90}
+            
+            fmt.Println("Original array:", numbers)
+            
+            QuickSort(numbers)
+            
+            fmt.Println("Sorted array:", numbers)
+        }
+
+  - id: heap-sort
+    name: Heap Sort
+    description: A comparison-based sorting algorithm that uses a binary heap data structure to sort elements.
+    complexity:
+      time:
+        best: O(n log n)
+        average: O(n log n)
+        worst: O(n log n)
+      space: O(1)
+    characteristics:
+      stable: false
+      inPlace: true
+      adaptive: false
+      comparison: true
+    tags:
+      - comparison
+      - in-place
+      - heap-based
+      - efficient
+      - guaranteed
+    difficulty: intermediate
+    explanation:
+      - Build a max heap from the input data
+      - Swap the root (maximum element) with last element
+      - Reduce heap size by 1
+      - Heapify the root element
+      - Repeat until heap size is 1
+    pseudocode: |
+      procedure heapSort(A: list of sortable items)
+          buildMaxHeap(A)
+          for i = length(A) - 1 down to 1 do
+              swap(A[0], A[i])
+              heapify(A, 0, i)
+          end for
+      end procedure
+
+      procedure buildMaxHeap(A)
+          for i = length(A) / 2 - 1 down to 0 do
+              heapify(A, i, length(A))
+          end for
+      end procedure
+
+      procedure heapify(A, i, heapSize)
+          largest = i
+          left = 2 * i + 1
+          right = 2 * i + 2
+          
+          if left < heapSize and A[left] > A[largest] then
+              largest = left
+          end if
+          if right < heapSize and A[right] > A[largest] then
+              largest = right
+          end if
+          if largest != i then
+              swap(A[i], A[largest])
+              heapify(A, largest, heapSize)
+          end if
+      end procedure
+    useCases:
+      - When guaranteed O(n log n) and O(1) space is needed
+      - Systems programming
+      - When worst-case performance matters
+      - Embedded systems with limited memory
+    implementations:
+      python: |
+        def heap_sort(arr):
+            """
+            Sorts an array using the heap sort algorithm.
+            
+            Args:
+                arr: List of comparable elements
+                
+            Returns:
+                The sorted list (in-place)
+            """
+            n = len(arr)
+            
+            # Build a max heap
+            for i in range(n // 2 - 1, -1, -1):
+                heapify(arr, n, i)
+            
+            # Extract elements from heap one by one
+            for i in range(n - 1, 0, -1):
+                # Move current root to end
+                arr[0], arr[i] = arr[i], arr[0]
+                
+                # Heapify the reduced heap
+                heapify(arr, i, 0)
+            
+            return arr
+
+
+        def heapify(arr, n, i):
+            """
+            Heapifies a subtree rooted at index i.
+            
+            Args:
+                arr: The array
+                n: Size of heap
+                i: Root index of subtree
+            """
+            largest = i
+            left = 2 * i + 1
+            right = 2 * i + 2
+            
+            # Check if left child exists and is greater than root
+            if left < n and arr[left] > arr[largest]:
+                largest = left
+            
+            # Check if right child exists and is greater than largest so far
+            if right < n and arr[right] > arr[largest]:
+                largest = right
+            
+            # If largest is not root, swap and continue heapifying
+            if largest != i:
+                arr[i], arr[largest] = arr[largest], arr[i]
+                heapify(arr, n, largest)
+
+
+        # Example usage
+        if __name__ == "__main__":
+            numbers = [64, 34, 25, 12, 22, 11, 90]
+            print(f"Original array: {numbers}")
+            
+            sorted_numbers = heap_sort(numbers)
+            print(f"Sorted array: {sorted_numbers}")
+      java: |
+        public class HeapSort {
+            /**
+             * Sorts an array using the heap sort algorithm.
+             * 
+             * @param arr The array to be sorted
+             */
+            public static void heapSort(int[] arr) {
+                int n = arr.length;
+                
+                // Build a max heap
+                for (int i = n / 2 - 1; i >= 0; i--) {
+                    heapify(arr, n, i);
+                }
+                
+                // Extract elements from heap one by one
+                for (int i = n - 1; i > 0; i--) {
+                    // Move current root to end
+                    int temp = arr[0];
+                    arr[0] = arr[i];
+                    arr[i] = temp;
+                    
+                    // Heapify the reduced heap
+                    heapify(arr, i, 0);
+                }
+            }
+            
+            /**
+             * Heapifies a subtree rooted at index i.
+             * 
+             * @param arr The array
+             * @param n Size of heap
+             * @param i Root index of subtree
+             */
+            private static void heapify(int[] arr, int n, int i) {
+                int largest = i;
+                int left = 2 * i + 1;
+                int right = 2 * i + 2;
+                
+                // Check if left child exists and is greater than root
+                if (left < n && arr[left] > arr[largest]) {
+                    largest = left;
+                }
+                
+                // Check if right child exists and is greater than largest so far
+                if (right < n && arr[right] > arr[largest]) {
+                    largest = right;
+                }
+                
+                // If largest is not root, swap and continue heapifying
+                if (largest != i) {
+                    int swap = arr[i];
+                    arr[i] = arr[largest];
+                    arr[largest] = swap;
+                    
+                    heapify(arr, n, largest);
+                }
+            }
+            
+            /**
+             * Utility method to print an array.
+             * 
+             * @param arr The array to print
+             */
+            public static void printArray(int[] arr) {
+                for (int value : arr) {
+                    System.out.print(value + " ");
+                }
+                System.out.println();
+            }
+            
+            // Example usage
+            public static void main(String[] args) {
+                int[] numbers = {64, 34, 25, 12, 22, 11, 90};
+                
+                System.out.println("Original array:");
+                printArray(numbers);
+                
+                heapSort(numbers);
+                
+                System.out.println("Sorted array:");
+                printArray(numbers);
+            }
+        }
+      go: |
+        package main
+
+        import "fmt"
+
+        // HeapSort sorts a slice using the heap sort algorithm.
+        // It modifies the slice in place.
+        func HeapSort(arr []int) {
+            n := len(arr)
+            
+            // Build a max heap
+            for i := n/2 - 1; i >= 0; i-- {
+                heapify(arr, n, i)
+            }
+            
+            // Extract elements from heap one by one
+            for i := n - 1; i > 0; i-- {
+                // Move current root to end
+                arr[0], arr[i] = arr[i], arr[0]
+                
+                // Heapify the reduced heap
+                heapify(arr, i, 0)
+            }
+        }
+
+        // heapify heapifies a subtree rooted at index i
+        func heapify(arr []int, n, i int) {
+            largest := i
+            left := 2*i + 1
+            right := 2*i + 2
+            
+            // Check if left child exists and is greater than root
+            if left < n && arr[left] > arr[largest] {
+                largest = left
+            }
+            
+            // Check if right child exists and is greater than largest so far
+            if right < n && arr[right] > arr[largest] {
+                largest = right
+            }
+            
+            // If largest is not root, swap and continue heapifying
+            if largest != i {
+                arr[i], arr[largest] = arr[largest], arr[i]
+                heapify(arr, n, largest)
+            }
+        }
+
+        // Example usage
+        func main() {
+            numbers := []int{64, 34, 25, 12, 22, 11, 90}
+            
+            fmt.Println("Original array:", numbers)
+            
+            HeapSort(numbers)
+            
+            fmt.Println("Sorted array:", numbers)
+        }
+
+  - id: counting-sort
+    name: Counting Sort
+    description: A non-comparison based integer sorting algorithm that counts the number of objects having distinct key values.
+    complexity:
+      time:
+        best: O(n + k)
+        average: O(n + k)
+        worst: O(n + k)
+      space: O(k)
+    characteristics:
+      stable: true
+      inPlace: false
+      adaptive: false
+      comparison: false
+    tags:
+      - non-comparison
+      - stable
+      - integer-sort
+      - linear-time
+      - counting
+    difficulty: intermediate
+    explanation:
+      - Count occurrences of each unique element
+      - Calculate cumulative counts
+      - Place elements in output array using counts
+      - Works only for integers in a known range
+    pseudocode: |
+      procedure countingSort(A: list of integers, k: max value)
+          count = array of k+1 zeros
+          output = array of length(A) zeros
+          
+          for i = 0 to length(A) - 1 do
+              count[A[i]] = count[A[i]] + 1
+          end for
+          
+          for i = 1 to k do
+              count[i] = count[i] + count[i-1]
+          end for
+          
+          for i = length(A) - 1 down to 0 do
+              output[count[A[i]] - 1] = A[i]
+              count[A[i]] = count[A[i]] - 1
+          end for
+          
+          return output
+      end procedure
+    useCases:
+      - Sorting integers within a known range
+      - When range of input is not significantly larger than number of elements
+      - As a subroutine in radix sort
+      - When linear time complexity is needed
+    implementations:
+      python: |
+        def counting_sort(arr):
+            """
+            Sorts an array of non-negative integers using counting sort.
+            
+            Args:
+                arr: List of non-negative integers
+                
+            Returns:
+                The sorted list
+            """
+            if not arr:
+                return arr
+            
+            # Find the range of input
+            max_val = max(arr)
+            min_val = min(arr)
+            range_size = max_val - min_val + 1
+            
+            # Create count array
+            count = [0] * range_size
+            output = [0] * len(arr)
+            
+            # Store count of each element
+            for num in arr:
+                count[num - min_val] += 1
+            
+            # Calculate cumulative count
+            for i in range(1, range_size):
+                count[i] += count[i - 1]
+            
+            # Build output array
+            for i in range(len(arr) - 1, -1, -1):
+                output[count[arr[i] - min_val] - 1] = arr[i]
+                count[arr[i] - min_val] -= 1
+            
+            return output
+
+
+        # Example usage
+        if __name__ == "__main__":
+            numbers = [64, 34, 25, 12, 22, 11, 90]
+            print(f"Original array: {numbers}")
+            
+            sorted_numbers = counting_sort(numbers)
+            print(f"Sorted array: {sorted_numbers}")
+      java: |
+        public class CountingSort {
+            /**
+             * Sorts an array of non-negative integers using counting sort.
+             * 
+             * @param arr The array to be sorted
+             * @return The sorted array
+             */
+            public static int[] countingSort(int[] arr) {
+                if (arr.length == 0) {
+                    return arr;
+                }
+                
+                // Find the range of input
+                int maxVal = arr[0];
+                int minVal = arr[0];
+                for (int num : arr) {
+                    if (num > maxVal) maxVal = num;
+                    if (num < minVal) minVal = num;
+                }
+                
+                int rangeSize = maxVal - minVal + 1;
+                
+                // Create count array
+                int[] count = new int[rangeSize];
+                int[] output = new int[arr.length];
+                
+                // Store count of each element
+                for (int num : arr) {
+                    count[num - minVal]++;
+                }
+                
+                // Calculate cumulative count
+                for (int i = 1; i < rangeSize; i++) {
+                    count[i] += count[i - 1];
+                }
+                
+                // Build output array (traversing from end maintains stability)
+                for (int i = arr.length - 1; i >= 0; i--) {
+                    output[count[arr[i] - minVal] - 1] = arr[i];
+                    count[arr[i] - minVal]--;
+                }
+                
+                return output;
+            }
+            
+            /**
+             * Utility method to print an array.
+             * 
+             * @param arr The array to print
+             */
+            public static void printArray(int[] arr) {
+                for (int value : arr) {
+                    System.out.print(value + " ");
+                }
+                System.out.println();
+            }
+            
+            // Example usage
+            public static void main(String[] args) {
+                int[] numbers = {64, 34, 25, 12, 22, 11, 90};
+                
+                System.out.println("Original array:");
+                printArray(numbers);
+                
+                int[] sorted = countingSort(numbers);
+                
+                System.out.println("Sorted array:");
+                printArray(sorted);
+            }
+        }
+      go: |
+        package main
+
+        import "fmt"
+
+        // CountingSort sorts a slice of non-negative integers using counting sort.
+        // It returns a new sorted slice without modifying the original.
+        func CountingSort(arr []int) []int {
+            if len(arr) == 0 {
+                return arr
+            }
+            
+            // Find the range of input
+            maxVal, minVal := arr[0], arr[0]
+            for _, num := range arr {
+                if num > maxVal {
+                    maxVal = num
+                }
+                if num < minVal {
+                    minVal = num
+                }
+            }
+            
+            rangeSize := maxVal - minVal + 1
+            
+            // Create count array
+            count := make([]int, rangeSize)
+            output := make([]int, len(arr))
+            
+            // Store count of each element
+            for _, num := range arr {
+                count[num-minVal]++
+            }
+            
+            // Calculate cumulative count
+            for i := 1; i < rangeSize; i++ {
+                count[i] += count[i-1]
+            }
+            
+            // Build output array (traversing from end maintains stability)
+            for i := len(arr) - 1; i >= 0; i-- {
+                output[count[arr[i]-minVal]-1] = arr[i]
+                count[arr[i]-minVal]--
+            }
+            
+            return output
+        }
+
+        // Example usage
+        func main() {
+            numbers := []int{64, 34, 25, 12, 22, 11, 90}
+            
+            fmt.Println("Original array:", numbers)
+            
+            sorted := CountingSort(numbers)
+            
+            fmt.Println("Sorted array:", sorted)
+        }
+
+  - id: radix-sort
+    name: Radix Sort
+    description: A non-comparison based sorting algorithm that sorts integers by processing individual digits, from least significant to most significant.
+    complexity:
+      time:
+        best: O(d × (n + k))
+        average: O(d × (n + k))
+        worst: O(d × (n + k))
+      space: O(n + k)
+    characteristics:
+      stable: true
+      inPlace: false
+      adaptive: false
+      comparison: false
+    tags:
+      - non-comparison
+      - stable
+      - integer-sort
+      - digit-based
+      - linear-time
+    difficulty: advanced
+    explanation:
+      - Sort numbers digit by digit starting from least significant
+      - Use a stable sort (like counting sort) for each digit
+      - Process all digits from rightmost to leftmost
+      - Maintains relative order of equal elements
+    pseudocode: |
+      procedure radixSort(A: list of integers)
+          max = maximum value in A
+          exp = 1
+          
+          while max / exp > 0 do
+              countingSortByDigit(A, exp)
+              exp = exp * 10
+          end while
+      end procedure
+
+      procedure countingSortByDigit(A, exp)
+          count = array of 10 zeros
+          output = array of length(A) zeros
+          
+          for i = 0 to length(A) - 1 do
+              digit = (A[i] / exp) mod 10
+              count[digit] = count[digit] + 1
+          end for
+          
+          for i = 1 to 9 do
+              count[i] = count[i] + count[i-1]
+          end for
+          
+          for i = length(A) - 1 down to 0 do
+              digit = (A[i] / exp) mod 10
+              output[count[digit] - 1] = A[i]
+              count[digit] = count[digit] - 1
+          end for
+          
+          copy output to A
+      end procedure
+    useCases:
+      - Sorting large lists of integers
+      - When numbers have fixed number of digits
+      - Sorting strings of fixed length
+      - When linear time is required and comparison is expensive
+    implementations:
+      python: |
+        def radix_sort(arr):
+            """
+            Sorts an array of non-negative integers using radix sort.
+            
+            Args:
+                arr: List of non-negative integers
+                
+            Returns:
+                The sorted list (in-place)
+            """
+            if not arr:
+                return arr
+            
+            # Find the maximum number to know number of digits
+            max_num = max(arr)
+            
+            # Do counting sort for every digit
+            exp = 1
+            while max_num // exp > 0:
+                counting_sort_by_digit(arr, exp)
+                exp *= 10
+            
+            return arr
+
+
+        def counting_sort_by_digit(arr, exp):
+            """
+            Counting sort based on a specific digit position.
+            
+            Args:
+                arr: The array to sort
+                exp: The digit position (1, 10, 100, etc.)
+            """
+            n = len(arr)
+            output = [0] * n
+            count = [0] * 10
+            
+            # Store count of occurrences
+            for i in range(n):
+                digit = (arr[i] // exp) % 10
+                count[digit] += 1
+            
+            # Calculate cumulative count
+            for i in range(1, 10):
+                count[i] += count[i - 1]
+            
+            # Build output array
+            for i in range(n - 1, -1, -1):
+                digit = (arr[i] // exp) % 10
+                output[count[digit] - 1] = arr[i]
+                count[digit] -= 1
+            
+            # Copy output array to arr
+            for i in range(n):
+                arr[i] = output[i]
+
+
+        # Example usage
+        if __name__ == "__main__":
+            numbers = [170, 45, 75, 90, 802, 24, 2, 66]
+            print(f"Original array: {numbers}")
+            
+            sorted_numbers = radix_sort(numbers)
+            print(f"Sorted array: {sorted_numbers}")
+      java: |
+        public class RadixSort {
+            /**
+             * Sorts an array of non-negative integers using radix sort.
+             * 
+             * @param arr The array to be sorted
+             */
+            public static void radixSort(int[] arr) {
+                if (arr.length == 0) {
+                    return;
+                }
+                
+                // Find the maximum number to know number of digits
+                int maxNum = arr[0];
+                for (int num : arr) {
+                    if (num > maxNum) {
+                        maxNum = num;
+                    }
+                }
+                
+                // Do counting sort for every digit
+                for (int exp = 1; maxNum / exp > 0; exp *= 10) {
+                    countingSortByDigit(arr, exp);
+                }
+            }
+            
+            /**
+             * Counting sort based on a specific digit position.
+             * 
+             * @param arr The array to sort
+             * @param exp The digit position (1, 10, 100, etc.)
+             */
+            private static void countingSortByDigit(int[] arr, int exp) {
+                int n = arr.length;
+                int[] output = new int[n];
+                int[] count = new int[10];
+                
+                // Store count of occurrences
+                for (int i = 0; i < n; i++) {
+                    int digit = (arr[i] / exp) % 10;
+                    count[digit]++;
+                }
+                
+                // Calculate cumulative count
+                for (int i = 1; i < 10; i++) {
+                    count[i] += count[i - 1];
+                }
+                
+                // Build output array
+                for (int i = n - 1; i >= 0; i--) {
+                    int digit = (arr[i] / exp) % 10;
+                    output[count[digit] - 1] = arr[i];
+                    count[digit]--;
+                }
+                
+                // Copy output array to arr
+                System.arraycopy(output, 0, arr, 0, n);
+            }
+            
+            /**
+             * Utility method to print an array.
+             * 
+             * @param arr The array to print
+             */
+            public static void printArray(int[] arr) {
+                for (int value : arr) {
+                    System.out.print(value + " ");
+                }
+                System.out.println();
+            }
+            
+            // Example usage
+            public static void main(String[] args) {
+                int[] numbers = {170, 45, 75, 90, 802, 24, 2, 66};
+                
+                System.out.println("Original array:");
+                printArray(numbers);
+                
+                radixSort(numbers);
+                
+                System.out.println("Sorted array:");
+                printArray(numbers);
+            }
+        }
+      go: |
+        package main
+
+        import "fmt"
+
+        // RadixSort sorts a slice of non-negative integers using radix sort.
+        // It modifies the slice in place.
+        func RadixSort(arr []int) {
+            if len(arr) == 0 {
+                return
+            }
+            
+            // Find the maximum number to know number of digits
+            maxNum := arr[0]
+            for _, num := range arr {
+                if num > maxNum {
+                    maxNum = num
+                }
+            }
+            
+            // Do counting sort for every digit
+            for exp := 1; maxNum/exp > 0; exp *= 10 {
+                countingSortByDigit(arr, exp)
+            }
+        }
+
+        // countingSortByDigit performs counting sort based on a specific digit position
+        func countingSortByDigit(arr []int, exp int) {
+            n := len(arr)
+            output := make([]int, n)
+            count := make([]int, 10)
+            
+            // Store count of occurrences
+            for i := 0; i < n; i++ {
+                digit := (arr[i] / exp) % 10
+                count[digit]++
+            }
+            
+            // Calculate cumulative count
+            for i := 1; i < 10; i++ {
+                count[i] += count[i-1]
+            }
+            
+            // Build output array
+            for i := n - 1; i >= 0; i-- {
+                digit := (arr[i] / exp) % 10
+                output[count[digit]-1] = arr[i]
+                count[digit]--
+            }
+            
+            // Copy output array to arr
+            copy(arr, output)
+        }
+
+        // Example usage
+        func main() {
+            numbers := []int{170, 45, 75, 90, 802, 24, 2, 66}
+            
+            fmt.Println("Original array:", numbers)
+            
+            RadixSort(numbers)
+            
+            fmt.Println("Sorted array:", numbers)
+        }
+
+  - id: bucket-sort
+    name: Bucket Sort
+    description: A distribution sort that divides elements into several buckets, sorts them individually, and then concatenates them.
+    complexity:
+      time:
+        best: O(n + k)
+        average: O(n + k)
+        worst: O(n²)
+      space: O(n + k)
+    characteristics:
+      stable: true
+      inPlace: false
+      adaptive: false
+      comparison: true
+    tags:
+      - distribution
+      - stable
+      - bucket-based
+      - average-linear
+    difficulty: intermediate
+    explanation:
+      - Create empty buckets based on value ranges
+      - Distribute elements into appropriate buckets
+      - Sort each bucket individually
+      - Concatenate all sorted buckets
+    pseudocode: |
+      procedure bucketSort(A: list of sortable items)
+          n = length(A)
+          buckets = array of n empty lists
+          
+          for i = 0 to n - 1 do
+              index = floor(n * A[i])
+              insert A[i] into buckets[index]
+          end for
+          
+          for i = 0 to n - 1 do
+              sort buckets[i] using insertion sort
+          end for
+          
+          result = concatenate all buckets
+          return result
+      end procedure
+    useCases:
+      - When input is uniformly distributed
+      - Sorting floating point numbers in range [0, 1)
+      - External sorting
+      - When distribution of data is known
+    implementations:
+      python: |
+        def bucket_sort(arr):
+            """
+            Sorts an array using bucket sort algorithm.
+            Assumes input is uniformly distributed in range [0, 1).
+            
+            Args:
+                arr: List of floating point numbers in range [0, 1)
+                
+            Returns:
+                The sorted list
+            """
+            if not arr:
+                return arr
+            
+            # Create n empty buckets
+            n = len(arr)
+            buckets = [[] for _ in range(n)]
+            
+            # Put array elements in different buckets
+            for num in arr:
+                # Index in bucket
+                idx = int(n * num)
+                # Handle edge case where num = 1.0
+                if idx == n:
+                    idx = n - 1
+                buckets[idx].append(num)
+            
+            # Sort individual buckets using insertion sort
+            for bucket in buckets:
+                insertion_sort(bucket)
+            
+            # Concatenate all buckets
+            result = []
+            for bucket in buckets:
+                result.extend(bucket)
+            
+            return result
+
+
+        def insertion_sort(arr):
+            """Simple insertion sort for sorting individual buckets."""
+            for i in range(1, len(arr)):
+                key = arr[i]
+                j = i - 1
+                while j >= 0 and arr[j] > key:
+                    arr[j + 1] = arr[j]
+                    j -= 1
+                arr[j + 1] = key
+
+
+        # Example usage
+        if __name__ == "__main__":
+            numbers = [0.897, 0.565, 0.656, 0.1234, 0.665, 0.3434]
+            print(f"Original array: {numbers}")
+            
+            sorted_numbers = bucket_sort(numbers)
+            print(f"Sorted array: {sorted_numbers}")
+      java: |
+        import java.util.ArrayList;
+        import java.util.Collections;
+        import java.util.List;
+
+        public class BucketSort {
+            /**
+             * Sorts an array using bucket sort algorithm.
+             * Assumes input is uniformly distributed in range [0, 1).
+             * 
+             * @param arr The array to be sorted
+             * @return The sorted array
+             */
+            public static double[] bucketSort(double[] arr) {
+                if (arr.length == 0) {
+                    return arr;
+                }
+                
+                int n = arr.length;
+                
+                // Create n empty buckets
+                @SuppressWarnings("unchecked")
+                List<Double>[] buckets = new ArrayList[n];
+                for (int i = 0; i < n; i++) {
+                    buckets[i] = new ArrayList<>();
+                }
+                
+                // Put array elements in different buckets
+                for (double num : arr) {
+                    // Index in bucket
+                    int idx = (int) (n * num);
+                    // Handle edge case where num = 1.0
+                    if (idx == n) {
+                        idx = n - 1;
+                    }
+                    buckets[idx].add(num);
+                }
+                
+                // Sort individual buckets
+                for (List<Double> bucket : buckets) {
+                    Collections.sort(bucket);
+                }
+                
+                // Concatenate all buckets
+                int index = 0;
+                for (List<Double> bucket : buckets) {
+                    for (double num : bucket) {
+                        arr[index++] = num;
+                    }
+                }
+                
+                return arr;
+            }
+            
+            /**
+             * Utility method to print an array.
+             * 
+             * @param arr The array to print
+             */
+            public static void printArray(double[] arr) {
+                for (double value : arr) {
+                    System.out.printf("%.4f ", value);
+                }
+                System.out.println();
+            }
+            
+            // Example usage
+            public static void main(String[] args) {
+                double[] numbers = {0.897, 0.565, 0.656, 0.1234, 0.665, 0.3434};
+                
+                System.out.println("Original array:");
+                printArray(numbers);
+                
+                bucketSort(numbers);
+                
+                System.out.println("Sorted array:");
+                printArray(numbers);
+            }
+        }
+      go: |
+        package main
+
+        import (
+            "fmt"
+            "sort"
+        )
+
+        // BucketSort sorts a slice of floating point numbers using bucket sort.
+        // Assumes input is uniformly distributed in range [0, 1).
+        // It modifies the slice in place.
+        func BucketSort(arr []float64) {
+            if len(arr) == 0 {
+                return
+            }
+            
+            n := len(arr)
+            
+            // Create n empty buckets
+            buckets := make([][]float64, n)
+            for i := range buckets {
+                buckets[i] = []float64{}
+            }
+            
+            // Put array elements in different buckets
+            for _, num := range arr {
+                // Index in bucket
+                idx := int(float64(n) * num)
+                // Handle edge case where num = 1.0
+                if idx == n {
+                    idx = n - 1
+                }
+                buckets[idx] = append(buckets[idx], num)
+            }
+            
+            // Sort individual buckets
+            for _, bucket := range buckets {
+                sort.Float64s(bucket)
+            }
+            
+            // Concatenate all buckets
+            index := 0
+            for _, bucket := range buckets {
+                for _, num := range bucket {
+                    arr[index] = num
+                    index++
+                }
+            }
+        }
+
+        // Example usage
+        func main() {
+            numbers := []float64{0.897, 0.565, 0.656, 0.1234, 0.665, 0.3434}
+            
+            fmt.Println("Original array:", numbers)
+            
+            BucketSort(numbers)
+            
+            fmt.Printf("Sorted array: %v\n", numbers)
+        }
