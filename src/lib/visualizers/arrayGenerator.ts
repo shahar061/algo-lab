@@ -6,8 +6,8 @@ import type { ArrayPreset } from "./types";
 export function generateArray(
   size: number,
   preset: ArrayPreset = "random",
-  min: number = 1,
-  max: number = 100,
+  min = 1,
+  max = 100,
 ): number[] {
   switch (preset) {
     case "random":
@@ -105,5 +105,5 @@ function generateAllEqualArray(
   max: number,
 ): number[] {
   const value = Math.floor((min + max) / 2);
-  return Array(size).fill(value);
+  return Array(size).fill(value) as number[];
 }

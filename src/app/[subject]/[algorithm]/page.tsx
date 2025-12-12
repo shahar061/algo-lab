@@ -63,7 +63,6 @@ export default async function AlgorithmPage({
   // Implementation coming soon
   return "Hello, World!";
 }`;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const implementations = fullAlgorithmData?.implementations;
 
   // Determine visualization content based on subject
@@ -100,11 +99,9 @@ export default async function AlgorithmPage({
                 bullets={explanationSteps}
               />
               <CodePanel language="pseudocode" code={pseudocode} />
-              {/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument */}
               {implementations && Object.keys(implementations).length > 0 && (
                 <MonacoCodePanel code={implementations} />
               )}
-              {/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument */}
               {fullAlgorithmData && (
                 <>
                   <ComplexityPanel complexity={fullAlgorithmData.complexity} />

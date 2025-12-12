@@ -61,7 +61,7 @@ export function generateCountingSortSteps(initialArray: number[]): SortStep[] {
     // Update original array to show progress
     for (let j = 0; j <= pos; j++) {
       if (output[j] !== 0) {
-        arr[j] = output[j]!;
+        arr[j] = output[j] as number;
       }
     }
 

@@ -89,7 +89,7 @@ function countingSortByDigit(
 
   // Copy output array to arr
   for (let i = 0; i < n; i++) {
-    arr[i] = output[i]!;
+    arr[i] = output[i] as number;
   }
 
   steps.push({

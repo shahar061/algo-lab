@@ -25,6 +25,7 @@ export function SortingDemo({ algorithmId }: SortingDemoProps) {
   const steps = useMemo(() => {
     const array = generateArray(arraySize, arrayPreset, 1, 100);
     return generateSortingSteps(algorithmId, array);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [algorithmId, arraySize, arrayPreset, seed]);
 
   const player = usePlayer<SortStep>({

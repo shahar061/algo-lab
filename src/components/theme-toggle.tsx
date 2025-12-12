@@ -24,7 +24,7 @@ export function ThemeToggle() {
 
   const toggleTheme = () => {
     // Use resolvedTheme to get the actual current theme (handles "system" correctly)
-    const currentTheme = resolvedTheme || theme;
+    const currentTheme = resolvedTheme ?? theme;
     setTheme(currentTheme === "dark" ? "light" : "dark");
   };
 
